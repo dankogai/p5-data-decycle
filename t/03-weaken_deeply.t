@@ -1,5 +1,5 @@
 #
-# $Id$
+# $Id: 03-weaken_deeply.t,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
 #
 use strict;
 use warnings;

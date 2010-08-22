@@ -1,8 +1,8 @@
 #
-# $Id$
+# $Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
 #
 package Data::Decycle;
-use 5.00801;
+use 5.008001;
 use warnings;
 use strict;
 use Carp;
@@ -147,7 +147,7 @@ Data::Decycle - (Cyclic|Circular) reference decycler
 
 =head1 VERSION
 
-$Id$
+$Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
 
 =head1 SYNOPSIS
 

@@ -1,7 +1,7 @@
 #
 # $Id$
 #
-use 5.00801;
+use 5.008001;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
