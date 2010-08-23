@@ -1,5 +1,5 @@
 #
-# $Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
+# $Id: Decycle.pm,v 0.2 2010/08/23 09:11:03 dankogai Exp dankogai $
 #
 package Data::Decycle;
 use 5.008001;
@@ -8,7 +8,7 @@ use strict;
 use Carp;
 use Scalar::Util qw/refaddr weaken isweak/;
 
-our $VERSION = sprintf "%d.%02d", q$Revision: 0.1 $ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%02d", q$Revision: 0.2 $ =~ /(\d+)/g;
 our $DEBUG = 0;
 
 use base 'Exporter';
@@ -147,7 +147,7 @@ Data::Decycle - (Cyclic|Circular) reference decycler
 
 =head1 VERSION
 
-$Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
+$Id: Decycle.pm,v 0.2 2010/08/23 09:11:03 dankogai Exp dankogai $
 
 =head1 SYNOPSIS
 
@@ -176,7 +176,10 @@ $Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
       $cyclic_href->{cyclic} = $cyclic_href;
   }
 
-  # if you have PadWalker, you can decycle closures, too.
+=head2 Code Reference and PadWalker
+
+If you have PadWalker, you can decycle closures, too.
+
   {
       my $guard = Data::Decycle->new;
       my $cref;
@@ -185,7 +188,10 @@ $Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
       print $cref->(10);
   }
 
-  # you can also cope with circular references explicitly
+=head2 Functional Interface
+
+You can also cope with circular references explicitly
+
   use Data::Decycle ':all';
   my $obj = bless {}, 'Dummy';
   $obj->{me} = $obj;
@@ -195,6 +201,32 @@ $Id: Decycle.pm,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
   print has_cyclic_ref($obj); # true
   decycle_deeply($obj);
   print $obj->{me} == undef;  # true
+
+=head2 as a base class
+
+You can also use it as a base class.
+
+  {
+    package Dummy;
+    use base 'Data::Decycle';
+    sub new { bless $_[1], $_[0] }
+    sub DESTROY { warn "($_[0])" }
+  }
+  {
+    my $mom = Dummy->new( {} );
+    my $son = Dummy->new( {} );
+    say "($mom) has cyclic ref ? ", $mom->has_cyclic_ref ? 'yes' : 'no';
+    say "($son) may leak ? ",       $son->may_leak?        'yes' : 'no';
+    $mom->{son} = $son;
+    $son->{mom} = $mom;
+    say "($mom) has cyclic ref ? ", $mom->has_cyclic_ref ? 'yes' : 'no';
+    say "($son) may leak ? ",       $son->may_leak?        'yes' : 'no';
+    $mom->weaken_deeply;
+    $son->weaken_deeply;
+    say "($mom) has cyclic ref ? ", $mom->has_cyclic_ref ? 'yes' : 'no';
+    say "($son) may leak ? ",       $son->may_leak?        'yes' : 'no';
+  }
+
 
 =head1 DESCRIPTION
 

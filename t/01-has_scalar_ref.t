@@ -1,5 +1,5 @@
 #
-# $Id: 01-has_scalar_ref.t,v 0.1 2010/08/22 19:58:45 dankogai Exp dankogai $
+# $Id: 01-has_scalar_ref.t,v 0.1 2010/08/22 19:58:45 dankogai Exp $
 #
 use strict;
 use warnings;

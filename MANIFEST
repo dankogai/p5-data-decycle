@@ -1,8 +1,8 @@
 Changes
-lib/Data/Decycle.pm
 MANIFEST			This list of files
-MANIFEST.skip
+Makefile.PL
 README
+lib/Data/Decycle.pm
 t/00-load.t
 t/01-has_scalar_ref.t
 t/02-decycle_deeply.t
